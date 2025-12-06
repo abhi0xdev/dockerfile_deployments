@@ -9,8 +9,8 @@ export default function UserInfo() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('http://localhost:5003/user');
-      const data = await res.json();
+      const res = import.meta.env.VITE_USER_API;
+      const data = await fetch(res).then(res => res.json());
       setUser(data.data || null);
     } catch (err) {
       setError('Failed to load user');

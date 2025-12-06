@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    depends_on:
+      - menu-service
+      - order-service
+      - user-service
+    ports:
+      - "80:80"   # Only FE needs external port to browser
+
+  menu-service:
+    build: ./menu-service
+    container_name: menu-service
+    expose:
+      - "5001"
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    expose:
+      - "5002"
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    expose:
+      - "5003"

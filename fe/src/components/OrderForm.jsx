@@ -44,17 +44,15 @@ export default function OrderForm() {
 
     try {
       const items = parseItems();
-      const res = await fetch('http://localhost:5002/order', {
+      const res = import.meta.env.VITE_ORDER_API.then(res => fetch(res, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: Number(userId),
-          items,
-          notes
-        })
-      });
+        body: JSON.stringify({ userId: Number(userId), items, notes })
+      }));
 
-      const data = await res.json();
+      const data = await res.then(res => res.json())  .catch(err => {
+        setResponse({ status: 0, body: { error: 'Request failed' } });
+      });
       setResponse({ status: res.status, body: data });
     } catch (err) {
       setResponse({ status: 0, body: { error: 'Request failed' } });
@@ -66,36 +64,29 @@ export default function OrderForm() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          <div>User ID</div>
-          <input
-            style={inputStyle}
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-            placeholder="101"
-          />
-        </label>
+        <label>User ID</label>
+        <input
+          style={inputStyle}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          placeholder="101"
+        />
 
-        <label>
-          <div>Items (e.g. 1x2, 3x1)</div>
-          <input
-            style={inputStyle}
-            value={itemsText}
-            onChange={(e) => setItemsText(e.target.value)}
-            placeholder="menuItemId x quantity"
-          />
-        </label>
+        <label>Items (e.g. 1x2, 3x1)</label>
+        <input
+          style={inputStyle}
+          value={itemsText}
+          onChange={(e) => setItemsText(e.target.value)}
+          placeholder="menuItemId x quantity"
+        />
 
-        <label>
-          <div>Notes</div>
-          <textarea
-            style={textareaStyle}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Extra hot, no sugar..."
-          />
-        </label>
-
+        <label>Notes</label>
+        <textarea
+          style={textareaStyle}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Optional notes"
+        />
         <button
           type="submit"
           disabled={loading}

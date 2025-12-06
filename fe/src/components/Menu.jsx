@@ -25,8 +25,8 @@ export default function Menu() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('http://localhost:5001/menu');
-      const data = await res.json();
+      const res = import.meta.env.VITE_MENU_API;
+      const data = await fetch(res).then(res => res.json());
       setMenu(data.data || []);
     } catch (err) {
       setError('Failed to load menu');
