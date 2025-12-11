@@ -6,7 +6,9 @@
 
 2) then created Dockerfile for each services to build the apps using multistage so we can reduce the apps size
 
-3) commands: docker build -t fe:v1 ./fe (to build locally)
+3) commands: 
+
+             docker build -t fe:v1 ./fe (to build locally)
 
              docker run -p 80:80 fe:v1 (running docker locally)
 
